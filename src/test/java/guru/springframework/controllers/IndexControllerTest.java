@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,6 +62,7 @@ public class IndexControllerTest {
 
         recipes.add(recipe);
 
+        //when
         when(recipeService.getRecipes()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
@@ -68,12 +70,12 @@ public class IndexControllerTest {
         //when
         String viewName = controller.getIndexPage(model);
 
-
         //then
         assertEquals("index", viewName);
         verify(recipeService, times(1)).getRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
         Set<Recipe> setInController = argumentCaptor.getValue();
+        System.out.println(Arrays.toString(argumentCaptor.getValue().toArray()));
         assertEquals(2, setInController.size());
     }
 
